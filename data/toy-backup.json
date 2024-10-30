@@ -1,0 +1,34 @@
+[
+    {
+        "_id": "6grZ4",
+        "name": "Talking Doll",
+        "price": 123,
+        "labels": [
+            "Doll",
+            "Battery Powered",
+            "Baby"
+        ],
+        "createdAt": 1112223,
+        "inStock": true
+    },
+    {
+        "_id": "6grRE",
+        "name": "Skateboard",
+        "price": 200,
+        "labels": [
+            "On Wheels"
+        ],
+        "createdAt": 1112224,
+        "inStock": false
+    },
+    {
+        "_id": "6g789",
+        "name": "Monopoly",
+        "price": 155,
+        "labels": [
+            "Box Game"
+        ],
+        "createdAt": 1112225,
+        "inStock": true
+    }
+]
