@@ -29,6 +29,7 @@ app.get('/api/toy', (req, res) => {
         name: req.query.name || '',
         price: +req.query.price || 0,
         labels: req.query.labels || [],
+        inStock: req.query.inStock || 'all',
         selector: req.query.selector || '',
     }
     toyService.query(filterBy)
@@ -58,6 +59,7 @@ app.post('/api/toy', (req, res) => {
         price: +req.body.price,
         labels: req.body.labels,
         inStock: req.body.inStock,
+        imgUrl: req.body.imgUrl,
         createdAt: Date.now()
     }
     toyService.save(toy, null)

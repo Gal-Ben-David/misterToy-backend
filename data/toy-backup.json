@@ -1,7 +1,7 @@
 [
     {
         "_id": "6grZ4",
-        "name": "Talking Doll",
+        "name": "Rabbit",
         "price": 123,
         "labels": [
             "Doll",
@@ -9,7 +9,8 @@
             "Baby"
         ],
         "createdAt": 1112223,
-        "inStock": true
+        "inStock": true,
+        "imgUrl": "src/assets/img/toys/rabbit.jpg"
     },
     {
         "_id": "6grRE",
@@ -19,16 +20,18 @@
             "On Wheels"
         ],
         "createdAt": 1112224,
-        "inStock": false
+        "inStock": false,
+        "imgUrl": "src/assets/img/toys/Skateboard.jpg"
     },
     {
         "_id": "6g789",
-        "name": "Monopoly",
+        "name": "Rainbow Rings",
         "price": 155,
         "labels": [
             "Box Game"
         ],
         "createdAt": 1112225,
-        "inStock": true
+        "inStock": true,
+        "imgUrl": "src/assets/img/toys/rings.jpg"
     }
 ]
