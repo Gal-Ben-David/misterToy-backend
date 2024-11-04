@@ -23,13 +23,14 @@ async function login(username, password) {
     if (!match) throw new Error('Invalid username or password')
 
     delete user.password
+    console.log(user)
     return user
 }
 
 async function signup(username, password, fullname) {
     const saltRounds = 10
 
-    logger.debug(`auth.service - signup with username: ${username}, fullname: ${fullname}`)
+    loggerService.debug(`auth.service - signup with username: ${username}, fullname: ${fullname}`)
     if (!username || !password || !fullname) throw new Error('Missing details')
 
     const hash = await bcrypt.hash(password, saltRounds)

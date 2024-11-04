@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 
 import { dbService } from '../../services/db.service.js'
 import { loggerService } from '../../services/logger.service.js'
+import { authService } from '../auth/auth.service.js'
 import { utilService } from '../../services/util.service.js'
 
 export const toyService = {
@@ -71,9 +72,8 @@ async function update(toy) {
 			inStock: toy.inStock,
 			labels: toy.labels
 		}
-		toyToSave = { ...toy, ...updatedToy }
 		const collection = await dbService.getCollection('toys')
-		await collection.updateOne({ _id: ObjectId.createFromHexString(toy._id) }, { $set: toyToSave })
+		await collection.updateOne({ _id: ObjectId.createFromHexString(toy._id) }, { $set: updatedToy })
 		return toy
 	} catch (err) {
 		loggerService.error(`cannot update toy ${toyId}`, err)

@@ -1,5 +1,6 @@
 import { toyService } from './toy.service.js'
 import { loggerService } from '../../services/logger.service.js'
+import { authService } from '../auth/auth.service.js'
 
 export async function getToys(req, res) {
     try {
@@ -30,8 +31,6 @@ export async function getToyById(req, res) {
 }
 
 export async function addToy(req, res) {
-    const { loggedinUser } = req
-
     try {
         const toy = {
             name: req.body.name,
