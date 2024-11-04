@@ -9,11 +9,9 @@
         ],
         "inStock": true,
         "imgUrl": "src/assets/img/default-pic.jpg",
-        "createdAt": 1730573682842,
-        "_id": "HvgSH"
+        "createdAt": 1730573682842
     },
     {
-        "_id": "6grZ4",
         "name": "Rabbit",
         "price": 123,
         "labels": [
@@ -26,7 +24,6 @@
         "imgUrl": "src/assets/img/toys/rabbit.jpg"
     },
     {
-        "_id": "6grRE",
         "name": "Skateboard",
         "price": 200,
         "labels": [
@@ -37,7 +34,6 @@
         "imgUrl": "src/assets/img/toys/Skateboard.jpg"
     },
     {
-        "_id": "6g789",
         "name": "Rainbow Rings",
         "price": 155,
         "labels": [
