@@ -38,6 +38,7 @@ export async function addToy(req, res) {
             labels: req.body.labels,
             inStock: req.body.inStock,
             imgUrl: req.body.imgUrl,
+            msgs: req.body.msgs,
             createdAt: Date.now()
         }
         toy.owner = loggedinUser
@@ -60,6 +61,7 @@ export async function updateToy(req, res) {
             labels: req.body.labels,
             imgUrl: req.body.imgUrl,
             createdAt: req.body.createdAt,
+            msgs: req.body.msgs
         }
         const updatedToy = await toyService.update(toy)
         res.send(updatedToy)
@@ -89,6 +91,7 @@ export async function addToyMsg(req, res) {
             by: loggedinUser,
             createdAt: Date.now(),
         }
+        console.log('msg', msg)
         const savedMsg = await toyService.addToyMsg(toyId, msg)
         res.send(savedMsg)
     } catch (err) {
@@ -98,7 +101,7 @@ export async function addToyMsg(req, res) {
 }
 
 export async function removeToyMsg(req, res) {
-    const { loggedinUser } = req
+    // const { loggedinUser } = req
     try {
         const toyId = req.params.id
         const { msgId } = req.params

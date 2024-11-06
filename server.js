@@ -1,9 +1,15 @@
+import http from 'http'
 import cors from 'cors'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
+
+import { authRoutes } from './api/auth/auth.routes.js'
+import { userRoutes } from './api/user/user.routes.js'
+import { toyRoutes } from './api/toy/toy.routes.js'
+import { reviewRoutes } from './api/review/review.routes.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -38,15 +44,20 @@ if (process.env.NODE_ENV === 'production') {
     app.use(cors(corsOptions))
 }
 
-import { authRoutes } from './api/auth/auth.routes.js'
-import { userRoutes } from './api/user/user.routes.js'
-import { toyRoutes } from './api/toy/toy.routes.js'
-
 // routes
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/review', reviewRoutes)
 app.use('/api/toy', toyRoutes)
 
+app.get('/**', (req, res) => {
+    res.sendFile(path.resolve('public/index.html'))
+})
+
+const PORT = process.env.PORT || 3030
+app.listen(PORT, () =>
+    loggerService.info(`Server listening on port http://127.0.0.1:${PORT}/`)
+)
 
 // REST API for Toys
 // app.get('/api/toy', (req, res) => {
@@ -125,13 +136,3 @@ app.use('/api/toy', toyRoutes)
 //             res.status(400).send('Cannot remove toy')
 //         })
 // })
-
-app.get('/**', (req, res) => {
-    res.sendFile(path.resolve('public/index.html'))
-})
-
-
-const PORT = process.env.PORT || 3030
-app.listen(PORT, () =>
-    loggerService.info(`Server listening on port http://127.0.0.1:${PORT}/`)
-)
