@@ -15,28 +15,37 @@ async function query(filterBy = {}) {
             {
                 $match: criteria,
             },
-            // {
-            //     $lookup: {
-            //         localField: 'byUserId',
-            //         from: 'user',
-            //         foreignField: '_id',
-            //         as: 'byUser',
-            //     },
-            // },
-            // {
-            //     $unwind: '$byUser',
-            // },
-            // {
-            //     $lookup: {
-            //         localField: 'aboutUserId',
-            //         from: 'user',
-            //         foreignField: '_id',
-            //         as: 'aboutUser',
-            //     },
-            // },
-            // {
-            //     $unwind: '$aboutUser',
-            // },
+            {
+                $lookup: {
+                    localField: 'userId',
+                    from: 'user',
+                    foreignField: '_id',
+                    as: 'byUser',
+                },
+            },
+            {
+                $unwind: '$byUser'
+            },
+            {
+                $lookup: {
+                    localField: 'toyId',
+                    from: 'toys',
+                    foreignField: '_id',
+                    as: 'aboutToy',
+                },
+            },
+            {
+                $unwind: '$aboutToy',
+            },
+            {
+                $project: {
+                    _id: true,
+                    txt: 1,
+                    byUser: { _id: 1, fullname: 1 },
+                    aboutToy: { _id: 1, name: 1, price: 1 },
+                    createdAt: 1
+                },
+            },
         ]).toArray()
 
         console.log('reviewfromservice', reviews)
@@ -85,13 +94,17 @@ async function remove(reviewId) {
 
 async function add(review) {
     try {
+        const newId = new ObjectId()
         const reviewToAdd = {
-            byUserId: ObjectId.createFromHexString(review.byUserId),
-            aboutUserId: ObjectId.createFromHexString(review.aboutUserId),
+            _id: newId,
+            userId: ObjectId.createFromHexString(review.byUserId),
+            toyId: ObjectId.createFromHexString(review.aboutToyId),
             txt: review.txt,
+            createdAt: newId.getTimestamp()
         }
         const collection = await dbService.getCollection('review')
         await collection.insertOne(reviewToAdd)
+
         return reviewToAdd
     } catch (err) {
         loggerService.error('cannot add review', err)
@@ -103,10 +116,10 @@ function _buildCriteria(filterBy) {
     const criteria = {}
 
     if (filterBy.byUserId) {
-        criteria.byUserId = ObjectId.createFromHexString(filterBy.byUserId)
+        criteria.userId = ObjectId.createFromHexString(filterBy.byUserId)
     }
-    if (filterBy.byToyId) {
-        criteria.toyId = filterBy.byToyId
+    if (filterBy.aboutToyId) {
+        criteria.toyId = ObjectId.createFromHexString(filterBy.aboutToyId)
     }
     console.log('criteria:', criteria)
     return criteria

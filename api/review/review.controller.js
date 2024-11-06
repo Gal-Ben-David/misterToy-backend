@@ -3,6 +3,7 @@ import { loggerService } from '../../services/logger.service.js'
 import { userService } from '../user/user.service.js'
 import { authService } from '../auth/auth.service.js'
 import { reviewService } from './review.service.js'
+import { toyService } from '../toy/toy.service.js'
 
 export async function getReviews(req, res) {
     try {
@@ -39,33 +40,32 @@ export async function addReview(req, res) {
 
     try {
         var review = req.body
-        const { aboutUserId } = review
         review.byUserId = loggedinUser._id
+        const toyId = review.aboutToyId
         review = await reviewService.add(review)
 
         //* Give the user credit for adding a review
-        loggedinUser.score += 10
-        await userService.update(loggedinUser)
 
         // Update user score in login token as well
-        const loginToken = authService.getLoginToken(loggedinUser)
-        res.cookie('loginToken', loginToken)
+        // const loginToken = authService.getLoginToken(loggedinUser)
+        // res.cookie('loginToken', loginToken)
 
         //* prepare the updated review for sending out
+        // const loginToken = authService.getLoginToken(loggedinUser)
+        // prepare the updated review for sending out
         review.byUser = loggedinUser
-        review.aboutUser = await userService.getById(aboutUserId)
-        review.createdAt = review._id.getTimestamp()
-
-        delete review.aboutUserId
+        const toy = await toyService.getToyById(toyId)
+        review.aboutToy = { name: toy.name, price: toy.price, _id: toy._id }
+        delete review.aboutToyId
         delete review.byUserId
 
         // socketService.broadcast({ type: 'review-added', data: review, userId: loggedinUser._id })
         // socketService.emitToUser({ type: 'review-about-you', data: review, userId: review.aboutUser._id })
 
-        const fullUser = await userService.getById(loggedinUser._id)
+        // const fullUser = await userService.getById(loggedinUser._id)
         // socketService.emitTo({ type: 'user-updated', data: fullUser, label: fullUser._id })
-
         res.send(review)
+
     } catch (err) {
         loggerService.error('Failed to add review', err)
         res.status(400).send({ err: 'Failed to add review' })
