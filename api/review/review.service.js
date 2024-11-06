@@ -72,9 +72,9 @@ async function query(filterBy = {}) {
     }
 }
 
-async function remove(reviewId) {
+async function remove(reviewId, loggedinUser) {
     try {
-        const { loggedinUser } = asyncLocalStorage.getStore()
+        // const { loggedinUser } = asyncLocalStorage.getStore()
         const collection = await dbService.getCollection('review')
 
         const criteria = { _id: ObjectId.createFromHexString(reviewId) }

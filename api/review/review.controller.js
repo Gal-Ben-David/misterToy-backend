@@ -22,7 +22,7 @@ export async function deleteReview(req, res) {
     const { id: reviewId } = req.params
 
     try {
-        const deletedCount = await reviewService.remove(reviewId)
+        const deletedCount = await reviewService.remove(reviewId, loggedinUser)
         if (deletedCount === 1) {
             // socketService.broadcast({ type: 'review-removed', data: reviewId, userId: loggedinUser._id })
             res.send({ msg: 'Deleted successfully' })
