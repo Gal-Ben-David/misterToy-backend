@@ -10,16 +10,19 @@ import { authRoutes } from './api/auth/auth.routes.js'
 import { userRoutes } from './api/user/user.routes.js'
 import { toyRoutes } from './api/toy/toy.routes.js'
 import { reviewRoutes } from './api/review/review.routes.js'
+import { setupSocketAPI } from './services/socket.service.js'
+import { loggerService } from './services/logger.service.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // import { toyService } from './services/toy.service.js'
-import { loggerService } from './services/logger.service.js'
 // import { userService } from './services/user.service.js'
+
 loggerService.info('server.js loaded...')
 
 const app = express()
+const server = http.createServer(app)
 
 app.use(express.json()) //needed for the request bodies
 app.use(cookieParser())
@@ -27,7 +30,8 @@ app.use(cookieParser())
 
 if (process.env.NODE_ENV === 'production') {
     // Express serve static files on production environment
-    app.use(express.static(path.resolve(__dirname, 'public')))
+    // app.use(express.static(path.resolve(__dirname, 'public')))
+    app.use(express.static(path.resolve('public')))
 } else {
     // Configuring CORS
     // Make sure origin contains the url 
@@ -52,12 +56,14 @@ app.use('/api/user', userRoutes)
 app.use('/api/review', reviewRoutes)
 app.use('/api/toy', toyRoutes)
 
+setupSocketAPI(server)
+
 app.get('/**', (req, res) => {
     res.sendFile(path.resolve('public/index.html'))
 })
 
 const PORT = process.env.PORT || 3030
-app.listen(PORT, () =>
+server.listen(PORT, () =>
     loggerService.info(`Server listening on port http://127.0.0.1:${PORT}/`)
 )
 

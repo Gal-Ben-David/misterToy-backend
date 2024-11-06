@@ -31,6 +31,7 @@ export async function getToyById(req, res) {
 }
 
 export async function addToy(req, res) {
+    const { loggedinUser } = req
     try {
         const toy = {
             name: req.body.name,

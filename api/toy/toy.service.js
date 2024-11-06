@@ -20,8 +20,26 @@ async function query(filterBy = {}) {
 		const criteria = {
 			name: { $regex: filterBy.name, $options: 'i' },
 		}
+		if (filterBy.labels && filterBy.labels.length > 0) {
+			criteria.labels = { $in: filterBy.labels }
+		}
+		if (filterBy.price !== 0) {
+			criteria.price = { $lte: filterBy.price }
+		}
+		if (filterBy.inStock !== 'all') {
+			criteria.inStock = (filterBy.inStock === 'available')
+		}
+
+		let sortOption = {}
+		if (filterBy.selector === 'name') {
+			sortOption = { name: 1 }
+		} else if (filterBy.selector === 'price') {
+			sortOption = { price: 1 }
+		} else if (filterBy.selector === 'createdAt') {
+			sortOption = { createdAt: 1 }
+		}
 		const collection = await dbService.getCollection('toys')
-		var toys = await collection.find(criteria).toArray()
+		var toys = await collection.find(criteria).sort(sortOption).toArray()
 		return toys
 	} catch (err) {
 		loggerService.error('cannot find toys', err)
