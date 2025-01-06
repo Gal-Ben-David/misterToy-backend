@@ -18,7 +18,6 @@ const __dirname = dirname(__filename)
 
 // import { toyService } from './services/toy.service.js'
 // import { userService } from './services/user.service.js'
-//******** */
 
 loggerService.info('server.js loaded...')
 
