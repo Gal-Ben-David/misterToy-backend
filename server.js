@@ -2,9 +2,9 @@ import http from 'http'
 import cors from 'cors'
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import dotenv from 'dotenv'
 
-import path, { dirname } from 'path'
-import { fileURLToPath } from 'url'
+import path from 'path'
 
 import { authRoutes } from './api/auth/auth.routes.js'
 import { userRoutes } from './api/user/user.routes.js'
@@ -13,8 +13,9 @@ import { reviewRoutes } from './api/review/review.routes.js'
 import { setupSocketAPI } from './services/socket.service.js'
 import { loggerService } from './services/logger.service.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+dotenv.config({
+    path: '.env', //give .env file location
+})
 
 loggerService.info('server.js loaded...')
 
@@ -49,6 +50,11 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/review', reviewRoutes)
 app.use('/api/toy', toyRoutes)
+
+app.get('/api/about', (req, res) => {
+    console.log(process.env.GOOGLE_MAPS_API_KEY)
+    res.json({ apiKey: process.env.GOOGLE_MAPS_API_KEY })
+})
 
 setupSocketAPI(server)
 

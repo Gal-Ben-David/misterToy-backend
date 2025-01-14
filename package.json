@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "cryptr": "^6.3.0",
+    "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "follow-redirects": "^1.15.9",
     "mongodb": "^6.10.0",
